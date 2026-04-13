@@ -3,1147 +3,201 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cyber Risk Analytics | ServiceNow IRM Example</title>
-  <style>
-    :root {
-      --bg: #0b1220;
-      --bg-2: #0f172a;
-      --panel: #131d31;
-      --panel-2: #19253d;
-      --border: #2b3a59;
-      --text: #e8eefc;
-      --muted: #9fb0d1;
-      --accent: #60a5fa;
-      --good: #22c55e;
-      --warn: #f59e0b;
-      --bad: #ef4444;
-      --good-soft: rgba(34, 197, 94, 0.16);
-      --warn-soft: rgba(245, 158, 11, 0.16);
-      --bad-soft: rgba(239, 68, 68, 0.16);
-      --radius: 18px;
-      --shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      color: var(--text);
-      background: linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
-    }
-
-    .container {
-      width: min(1440px, 94%);
-      margin: 0 auto;
-      padding: 28px 0 36px;
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      gap: 18px;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
-    }
-
-    .title-block h1 {
-      margin: 0 0 8px;
-      font-size: 32px;
-      line-height: 1.1;
-    }
-
-    .title-block p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.45;
-      max-width: 820px;
-    }
-
-    .tag-row {
-      margin-top: 12px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .tag {
-      background: #16223a;
-      border: 1px solid var(--border);
-      color: #ccdaf5;
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-size: 12px;
-    }
-
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-
-    .filters {
-      min-width: 360px;
-      padding: 16px;
-    }
-
-    .filters h3 {
-      margin: 0 0 12px;
-      font-size: 16px;
-    }
-
-    .filter-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .filter {
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 10px;
-    }
-
-    .filter label {
-      display: block;
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-
-    .filter select {
-      width: 100%;
-      border: 1px solid #374866;
-      background: #0f172a;
-      color: var(--text);
-      padding: 9px 10px;
-      border-radius: 10px;
-      outline: none;
-    }
-
-    .toolbar {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: center;
-      flex-wrap: wrap;
-      margin: 18px 0;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .tab-btn {
-      border: 1px solid var(--border);
-      background: #132038;
-      color: #dbe7ff;
-      padding: 10px 14px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: 700;
-    }
-
-    .tab-btn.active {
-      background: var(--accent);
-      color: #08111f;
-      border-color: var(--accent);
-    }
-
-    .meta-note {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .tab-content {
-      display: none;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 14px;
-      margin-bottom: 18px;
-    }
-
-    .kpi-card {
-      padding: 18px;
-    }
-
-    .kpi-label {
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 10px;
-    }
-
-    .kpi-value {
-      font-size: 34px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-
-    .kpi-foot {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      align-items: center;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .delta {
-      font-weight: 700;
-      font-size: 12px;
-      padding: 4px 8px;
-      border-radius: 999px;
-    }
-
-    .delta.good { background: var(--good-soft); color: #86efac; }
-    .delta.warn { background: var(--warn-soft); color: #fcd34d; }
-    .delta.bad  { background: var(--bad-soft); color: #fca5a5; }
-
-    .section-grid {
-      display: grid;
-      grid-template-columns: 2fr 1.1fr;
-      gap: 18px;
-      margin-bottom: 18px;
-    }
-
-    .section-grid-2 {
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 18px;
-      margin-bottom: 18px;
-    }
-
-    .panel {
-      padding: 18px;
-    }
-
-    .panel h2 {
-      margin: 0 0 6px;
-      font-size: 20px;
-    }
-
-    .sub {
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 14px;
-      line-height: 1.4;
-    }
-
-    .legend {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 8px;
-    }
-
-    .legend span::before {
-      content: "";
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      margin-right: 6px;
-      vertical-align: middle;
-      background: currentColor;
-    }
-
-    .domain-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .domain-item {
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px 14px;
-    }
-
-    .domain-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 8px;
-      font-size: 14px;
-    }
-
-    .domain-bar {
-      height: 10px;
-      background: #0f172a;
-      border-radius: 999px;
-      overflow: hidden;
-      border: 1px solid #263756;
-    }
-
-    .domain-fill {
-      height: 100%;
-      border-radius: 999px;
-    }
-
-    .callout-grid {
-      display: grid;
-      gap: 12px;
-    }
-
-    .callout {
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      border-left: 4px solid var(--accent);
-      border-radius: 14px;
-      padding: 14px;
-    }
-
-    .callout h4 {
-      margin: 0 0 8px;
-      font-size: 15px;
-    }
-
-    .callout p,
-    .callout li {
-      margin: 0;
-      color: #dce7fc;
-      line-height: 1.45;
-      font-size: 14px;
-    }
-
-    .callout ul {
-      margin: 0;
-      padding-left: 18px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-    }
-
-    th, td {
-      text-align: left;
-      padding: 12px 10px;
-      border-bottom: 1px solid var(--border);
-      vertical-align: top;
-    }
-
-    th {
-      font-size: 12px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .pill, .status {
-      display: inline-block;
-      padding: 5px 9px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-      white-space: nowrap;
-    }
-
-    .pill.high, .status.open { background: var(--bad-soft); color: #fca5a5; }
-    .pill.med, .status.progress { background: var(--warn-soft); color: #fcd34d; }
-    .pill.low, .status.closed { background: var(--good-soft); color: #86efac; }
-
-    .board-note {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-
-    .board-box {
-      background: var(--panel-2);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 14px;
-    }
-
-    .board-box h4 {
-      margin: 0 0 8px;
-      font-size: 15px;
-    }
-
-    .board-box p {
-      margin: 0;
-      color: #dce7fc;
-      line-height: 1.45;
-      font-size: 14px;
-    }
-
-    .identity-grid {
-      display: grid;
-      grid-template-columns: 1.1fr 1fr;
-      gap: 18px;
-      margin-bottom: 18px;
-    }
-
-    .mini-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-bottom: 18px;
-    }
-
-    .mini-card {
-      padding: 16px;
-    }
-
-    .mini-card h3 {
-      margin: 0 0 8px;
-      font-size: 15px;
-      color: var(--muted);
-      font-weight: 600;
-    }
-
-    .mini-card .big {
-      font-size: 30px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .footnote {
-      margin-top: 16px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    @media (max-width: 1200px) {
-      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-      .section-grid, .section-grid-2, .identity-grid, .board-note { grid-template-columns: 1fr; }
-      .mini-grid { grid-template-columns: 1fr; }
-    }
-
-    @media (max-width: 720px) {
-      .kpi-grid { grid-template-columns: 1fr; }
-      .filter-grid { grid-template-columns: 1fr; }
-      .filters { min-width: auto; width: 100%; }
-    }
-  </style>
+  <title>Executive Overview | Cyber Risk Analytics</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="script.js" defer></script>
 </head>
 <body>
-  <div class="container">
-    <div class="topbar">
-      <div class="title-block">
-        <h1>Cyber Risk Analytics Dashboard</h1>
-        <p>
-          Executive and operational reporting example using <strong>ServiceNow IRM / Risk Management</strong>
-          as the primary system of record for risks, treatments, ownership, and status tracking.
-          Reporting period covers <strong>Q1 2026</strong>.
-        </p>
-        <div class="tag-row">
-          <span class="tag">Source: ServiceNow IRM</span>
-          <span class="tag">Period: Jan-Mar 2026</span>
-          <span class="tag">Executive + Deep Dive</span>
-          <span class="tag">Interactive Filters</span>
+  <div class="app-shell">
+    <header class="top-header">
+      <div class="brand-block">
+        <h1>Cyber Risk Analytics</h1>
+        <p>Executive Overview | Source of record: ServiceNow IRM | Reporting period: Q1 2026</p>
+      </div>
+
+      <nav class="top-nav">
+        <a href="executive-overview.html" class="active">Executive Overview</a>
+        <a href="risk-analytics.html">Risk Analytics</a>
+        <a href="exposure-monitoring.html">Exposure Monitoring</a>
+        <a href="third-party-risk.html">Third-Party Risk</a>
+        <a href="decision-support.html">Decision Support</a>
+      </nav>
+    </header>
+
+    <section class="global-filters card">
+      <div class="filter-row">
+        <div class="filter-item">
+          <label for="dateRange">Date Range</label>
+          <select id="dateRange">
+            <option selected>Q1 2026 (Jan-Mar)</option>
+            <option>January 2026</option>
+            <option>February 2026</option>
+            <option>March 2026</option>
+          </select>
+        </div>
+
+        <div class="filter-item">
+          <label for="region">Region</label>
+          <select id="region">
+            <option selected>Global</option>
+            <option>EMEA</option>
+            <option>Americas</option>
+            <option>APAC</option>
+          </select>
+        </div>
+
+        <div class="filter-item">
+          <label for="businessUnit">Business Unit</label>
+          <select id="businessUnit">
+            <option selected>Enterprise</option>
+            <option>R&amp;D</option>
+            <option>Manufacturing</option>
+            <option>Commercial</option>
+          </select>
+        </div>
+
+        <div class="filter-item">
+          <label for="severity">Severity</label>
+          <select id="severity">
+            <option selected>All Severities</option>
+            <option>High</option>
+            <option>Medium</option>
+            <option>Low</option>
+          </select>
         </div>
       </div>
+    </section>
 
-      <div class="filters card">
-        <h3>Filters</h3>
-        <div class="filter-grid">
-          <div class="filter">
-            <label>Date Range</label>
-            <select id="dateRange">
-              <option value="q1" selected>Q1 2026 (Jan-Mar)</option>
-              <option value="jan">January 2026</option>
-              <option value="feb">February 2026</option>
-              <option value="mar">March 2026</option>
-            </select>
-          </div>
-          <div class="filter">
-            <label>Domain</label>
-            <select id="domainFilter">
-              <option value="all" selected>All Domains</option>
-              <option value="Identity & Access">Identity & Access</option>
-              <option value="Third-Party Risk">Third-Party Risk</option>
-              <option value="Vulnerability Management">Vulnerability Management</option>
-              <option value="Cloud Security">Cloud Security</option>
-            </select>
-          </div>
-          <div class="filter">
-            <label>Region</label>
-            <select id="regionFilter">
-              <option value="all" selected>Global</option>
-              <option value="EMEA">EMEA</option>
-              <option value="Americas">Americas</option>
-              <option value="APAC">APAC</option>
-            </select>
-          </div>
-          <div class="filter">
-            <label>Severity</label>
-            <select id="severityFilter">
-              <option value="all" selected>All Severities</option>
-              <option value="High">High</option>
-              <option value="Medium">Medium</option>
-            </select>
-          </div>
-        </div>
-      </div>
-    </div>
+    <main class="page-content">
+      <section class="page-hero">
+        <h2>Executive Overview</h2>
+        <p>Board-ready summary of risk posture, movement over time, financial exposure, and top leadership decisions.</p>
+      </section>
 
-    <div class="toolbar">
-      <div class="tabs">
-        <button class="tab-btn active" data-tab="executiveTab">Executive Dashboard</button>
-        <button class="tab-btn" data-tab="identityTab">Identity Risk Deep Dive</button>
-      </div>
-      <div class="meta-note" id="activeScopeText">
-        Showing: Q1 2026 | Global | All Domains | All Severities
-      </div>
-    </div>
-
-    <div id="executiveTab" class="tab-content active">
       <section class="kpi-grid">
-        <div class="card kpi-card">
-          <div class="kpi-label">Overall Cyber Risk Score</div>
-          <div class="kpi-value" id="kpiRiskScore">72</div>
-          <div class="kpi-foot">
-            <span>Residual risk index / 100</span>
-            <span class="delta bad" id="kpiRiskDelta">+4 vs Dec</span>
-          </div>
-        </div>
+        <article class="card kpi-card">
+          <span class="kpi-label">Cyber Rating</span>
+          <h3 class="kpi-value">742 / 900</h3>
+          <p class="kpi-foot amber">Moderate risk | -8 vs prior month</p>
+        </article>
 
-        <div class="card kpi-card">
-          <div class="kpi-label">Critical Risks Open</div>
-          <div class="kpi-value" id="kpiCriticalOpen">14</div>
-          <div class="kpi-foot">
-            <span>ServiceNow active high-impact records</span>
-            <span class="delta bad" id="kpiCriticalDelta">+2 vs Dec</span>
-          </div>
-        </div>
+        <article class="card kpi-card">
+          <span class="kpi-label">Overall Cyber Risk Score</span>
+          <h3 class="kpi-value">72</h3>
+          <p class="kpi-foot red">+4 vs Dec 2025</p>
+        </article>
 
-        <div class="card kpi-card">
-          <div class="kpi-label">Control Effectiveness</div>
-          <div class="kpi-value" id="kpiControl">81%</div>
-          <div class="kpi-foot">
-            <span>Weighted control score</span>
-            <span class="delta good" id="kpiControlDelta">+3 pts</span>
-          </div>
-        </div>
+        <article class="card kpi-card">
+          <span class="kpi-label">Critical Risks Open</span>
+          <h3 class="kpi-value">14</h3>
+          <p class="kpi-foot red">Above appetite</p>
+        </article>
 
-        <div class="card kpi-card">
-          <div class="kpi-label">High-Risk Assets</div>
-          <div class="kpi-value" id="kpiAssets">37</div>
-          <div class="kpi-foot">
-            <span>Assets linked to open high risk</span>
-            <span class="delta warn" id="kpiAssetsDelta">0 change</span>
-          </div>
-        </div>
+        <article class="card kpi-card">
+          <span class="kpi-label">Control Effectiveness</span>
+          <h3 class="kpi-value">81%</h3>
+          <p class="kpi-foot green">+3 pts vs prior quarter</p>
+        </article>
 
-        <div class="card kpi-card">
-          <div class="kpi-label">Risks Remediated</div>
-          <div class="kpi-value" id="kpiClosed">9</div>
-          <div class="kpi-foot">
-            <span>Closed or materially reduced</span>
-            <span class="delta good" id="kpiClosedDelta">+4 vs prior qtr</span>
-          </div>
-        </div>
+        <article class="card kpi-card">
+          <span class="kpi-label">Estimated Annual Loss</span>
+          <h3 class="kpi-value">$8.4M</h3>
+          <p class="kpi-foot amber">Modeled scenario range</p>
+        </article>
       </section>
 
-      <section class="section-grid">
-        <div class="card panel">
-          <h2>Risk Trend</h2>
-          <div class="sub">Monthly trend based on ServiceNow risk records, treatments, and residual scores.</div>
-          <div id="trendChart"></div>
-          <div class="legend">
-            <span style="color:#60a5fa;">Residual Risk Score</span>
-            <span style="color:#ef4444;">Critical Risks Open</span>
+      <section class="content-grid two-columns">
+        <article class="card panel">
+          <div class="panel-head">
+            <h3>Top KRIs vs Appetite</h3>
+            <p>Executive summary of the 5 most material indicators.</p>
           </div>
-        </div>
 
-        <div class="card panel">
-          <h2>Risk by Domain</h2>
-          <div class="sub">Average residual exposure by domain in the selected scope.</div>
-          <div class="domain-list" id="domainList"></div>
-        </div>
-      </section>
-
-      <section class="section-grid-2">
-        <div class="card panel">
-          <h2>What Changed</h2>
-          <div class="sub">Narrative framing for leadership, tied to Q1 2026 risk signals.</div>
-          <div class="callout-grid">
-            <div class="callout">
-              <h4>Main Drivers</h4>
-              <p id="narrativeDrivers"></p>
+          <div class="kri-status-list">
+            <div class="kri-row">
+              <span>Privileged accounts without MFA</span>
+              <strong class="status-pill red">Red</strong>
             </div>
-            <div class="callout">
-              <h4>Business Impact</h4>
-              <p id="narrativeImpact"></p>
+            <div class="kri-row">
+              <span>Critical internet-facing vulnerabilities</span>
+              <strong class="status-pill red">Red</strong>
             </div>
-            <div class="callout">
-              <h4>Recommended Actions</h4>
-              <ul id="narrativeActions"></ul>
+            <div class="kri-row">
+              <span>Third-party vendors above threshold</span>
+              <strong class="status-pill amber">Amber</strong>
+            </div>
+            <div class="kri-row">
+              <span>Compromised credentials detected</span>
+              <strong class="status-pill amber">Amber</strong>
+            </div>
+            <div class="kri-row">
+              <span>Cloud logging coverage</span>
+              <strong class="status-pill green">Green</strong>
             </div>
           </div>
-        </div>
+        </article>
 
-        <div class="card panel">
-          <h2>Control Effectiveness</h2>
-          <div class="sub">Key controls most linked to current residual risk.</div>
-          <div class="domain-list" id="controlList"></div>
-        </div>
-      </section>
+        <article class="card panel">
+          <div class="panel-head">
+            <h3>Financial Context</h3>
+            <p>Illustrative cyber risk quantification for leadership prioritization.</p>
+          </div>
 
-      <section class="section-grid-2">
-        <div class="card panel">
-          <h2>Risk Treatment Tracker</h2>
-          <div class="sub">Illustrative ServiceNow risk records and treatment workflow items.</div>
-          <table>
-            <thead>
-              <tr>
-                <th>Risk ID</th>
-                <th>Risk</th>
-                <th>Owner</th>
-                <th>Domain</th>
-                <th>Severity</th>
-                <th>Due</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="riskTableBody"></tbody>
-          </table>
-        </div>
-
-        <div class="card panel">
-          <h2>Board Note</h2>
-          <div class="sub">Three concise messages for leadership discussion.</div>
-          <div class="board-note">
-            <div class="board-box">
-              <h4>Current Exposure</h4>
-              <p id="boardExposure"></p>
+          <div class="metric-stack">
+            <div class="metric-line">
+              <span>Most likely loss scenario</span>
+              <strong>Identity-led unauthorized access</strong>
             </div>
-            <div class="board-box">
-              <h4>Biggest Concern</h4>
-              <p id="boardConcern"></p>
+            <div class="metric-line">
+              <span>Average annual loss</span>
+              <strong>$8.4M</strong>
             </div>
-            <div class="board-box">
-              <h4>Decision Needed</h4>
-              <p id="boardDecision"></p>
+            <div class="metric-line">
+              <span>Event likelihood</span>
+              <strong>18%</strong>
+            </div>
+            <div class="metric-line">
+              <span>Potential reduction if top 3 actions land</span>
+              <strong>$2.1M</strong>
             </div>
           </div>
-        </div>
-      </section>
-    </div>
-
-    <div id="identityTab" class="tab-content">
-      <section class="mini-grid">
-        <div class="card mini-card">
-          <h3>Privileged Accounts Without MFA</h3>
-          <div class="big" id="idMfaGap">18</div>
-          <div class="meta-note">Accounts tied to high-risk ServiceNow records</div>
-        </div>
-        <div class="card mini-card">
-          <h3>Third-Party Connected Apps</h3>
-          <div class="big" id="idVendorApps">7</div>
-          <div class="meta-note">Apps requiring authentication review</div>
-        </div>
-        <div class="card mini-card">
-          <h3>Identity Control Effectiveness</h3>
-          <div class="big" id="idControlScore">74%</div>
-          <div class="meta-note">Weighted score across MFA, PAM, recertification</div>
-        </div>
+        </article>
       </section>
 
-      <section class="identity-grid">
-        <div class="card panel">
-          <h2>Identity Risk Story</h2>
-          <div class="sub">Focused view on access, authentication, and vendor-linked exposure.</div>
-          <div class="callout-grid">
-            <div class="callout">
-              <h4>Current State</h4>
-              <p>
-                Identity remains the highest-risk domain in Q1 2026, driven by gaps in MFA enforcement,
-                recertification coverage, and legacy authentication on selected externally connected applications.
-              </p>
-            </div>
-            <div class="callout">
-              <h4>Why It Matters</h4>
-              <p>
-                This is the most direct path from technical weakness to business impact, because successful compromise
-                through valid credentials can bypass many perimeter controls and expose regulated or sensitive datasets.
-              </p>
-            </div>
-            <div class="callout">
-              <h4>Priority Actions</h4>
-              <ul>
-                <li>Accelerate MFA enforcement for privileged and external-facing accounts.</li>
-                <li>Complete migration of legacy vendor-connected authentication flows to OAuth2.</li>
-                <li>Automate third-party access recertification through ServiceNow workflow.</li>
-              </ul>
-            </div>
+      <section class="content-grid two-columns">
+        <article class="card panel">
+          <div class="panel-head">
+            <h3>Risk Trend</h3>
+            <p>Residual risk, open critical items, and progress over Q1 2026.</p>
           </div>
-        </div>
+          <div class="chart-placeholder" id="executiveTrendChart">
+            <p>Trend chart placeholder</p>
+          </div>
+        </article>
 
-        <div class="card panel">
-          <h2>Identity Controls</h2>
-          <div class="sub">Q1 control view for the selected scope.</div>
-          <div class="domain-list" id="identityControlList"></div>
-        </div>
+        <article class="card panel">
+          <div class="panel-head">
+            <h3>Board Note</h3>
+            <p>Three clear messages for executive discussion.</p>
+          </div>
+
+          <div class="narrative-card">
+            <h4>Current Exposure</h4>
+            <p>Q1 ended with elevated residual risk concentrated in identity, third-party access, and overdue remediation of internet-facing vulnerabilities.</p>
+          </div>
+
+          <div class="narrative-card">
+            <h4>Biggest Concern</h4>
+            <p>The combination of valid-credential attack paths and externally connected applications creates the fastest route to business-impacting exposure.</p>
+          </div>
+
+          <div class="narrative-card">
+            <h4>Decision Needed</h4>
+            <p>Approve identity hardening, critical patch acceleration, and third-party recertification automation as Q2 priorities.</p>
+          </div>
+        </article>
       </section>
-
-      <section class="card panel">
-        <h2>Identity Risk Records</h2>
-        <div class="sub">Identity and access risks filtered from the same ServiceNow-style dataset.</div>
-        <table>
-          <thead>
-            <tr>
-              <th>Risk ID</th>
-              <th>Risk</th>
-              <th>Owner</th>
-              <th>Region</th>
-              <th>Severity</th>
-              <th>Due</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="identityTableBody"></tbody>
-        </table>
-
-        <div class="footnote">
-          Example page only. Data is illustrative, but shaped to reflect realistic Q1 2026 themes:
-          identity risk, third-party access exposure, vulnerability backlog, and executive decision support.
-        </div>
-      </section>
-    </div>
+    </main>
   </div>
-
-  <script>
-    const monthlyData = {
-      q1: {
-        labels: ["Jan", "Feb", "Mar"],
-        riskScore: [68, 70, 72],
-        criticalOpen: [10, 12, 14],
-        controlEffectiveness: 81,
-        highRiskAssets: 37,
-        remediated: 9,
-        delta: {
-          risk: "+4 vs Dec",
-          critical: "+2 vs Dec",
-          control: "+3 pts",
-          assets: "0 change",
-          closed: "+4 vs prior qtr"
-        }
-      },
-      jan: {
-        labels: ["Jan"],
-        riskScore: [68],
-        criticalOpen: [10],
-        controlEffectiveness: 79,
-        highRiskAssets: 34,
-        remediated: 2,
-        delta: {
-          risk: "+0 baseline",
-          critical: "10 open",
-          control: "79%",
-          assets: "34 assets",
-          closed: "2 closed"
-        }
-      },
-      feb: {
-        labels: ["Feb"],
-        riskScore: [70],
-        criticalOpen: [12],
-        controlEffectiveness: 80,
-        highRiskAssets: 36,
-        remediated: 3,
-        delta: {
-          risk: "+2 vs Jan",
-          critical: "+2 vs Jan",
-          control: "+1 pt",
-          assets: "+2 vs Jan",
-          closed: "3 closed"
-        }
-      },
-      mar: {
-        labels: ["Mar"],
-        riskScore: [72],
-        criticalOpen: [14],
-        controlEffectiveness: 81,
-        highRiskAssets: 37,
-        remediated: 4,
-        delta: {
-          risk: "+2 vs Feb",
-          critical: "+2 vs Feb",
-          control: "+1 pt",
-          assets: "+1 vs Feb",
-          closed: "4 closed"
-        }
-      }
-    };
-
-    const risks = [
-      {
-        id: "RISK-1042",
-        title: "Legacy authentication on vendor-connected application",
-        owner: "Enterprise Apps",
-        domain: "Identity & Access",
-        severity: "High",
-        status: "In Progress",
-        region: "EMEA",
-        due: "15 Apr 2026"
-      },
-      {
-        id: "RISK-1048",
-        title: "Privileged accounts without enforced MFA",
-        owner: "Identity Security",
-        domain: "Identity & Access",
-        severity: "High",
-        status: "Open",
-        region: "Global",
-        due: "30 Apr 2026"
-      },
-      {
-        id: "RISK-1054",
-        title: "Critical internet-facing vulnerabilities overdue >30 days",
-        owner: "Infrastructure",
-        domain: "Vulnerability Management",
-        severity: "High",
-        status: "In Progress",
-        region: "Americas",
-        due: "22 Apr 2026"
-      },
-      {
-        id: "RISK-1060",
-        title: "Third-party access not recertified within policy window",
-        owner: "Vendor Risk",
-        domain: "Third-Party Risk",
-        severity: "Medium",
-        status: "Open",
-        region: "Global",
-        due: "10 May 2026"
-      },
-      {
-        id: "RISK-1066",
-        title: "Cloud logging gaps in regulated workloads",
-        owner: "Cloud Platform",
-        domain: "Cloud Security",
-        severity: "Medium",
-        status: "Closed",
-        region: "APAC",
-        due: "28 Apr 2026"
-      },
-      {
-        id: "RISK-1071",
-        title: "Shared service accounts with inadequate ownership review",
-        owner: "IAM Operations",
-        domain: "Identity & Access",
-        severity: "High",
-        status: "Open",
-        region: "EMEA",
-        due: "08 May 2026"
-      },
-      {
-        id: "RISK-1077",
-        title: "Third-party support account monitoring is incomplete",
-        owner: "Vendor Risk",
-        domain: "Third-Party Risk",
-        severity: "High",
-        status: "In Progress",
-        region: "Americas",
-        due: "19 May 2026"
-      }
-    ];
-
-    const domainScores = {
-      "Identity & Access": 84,
-      "Third-Party Risk": 79,
-      "Vulnerability Management": 76,
-      "Cloud Security": 70,
-      "Data Protection": 63,
-      "Endpoint Security": 58
-    };
-
-    const controls = [
-      { name: "MFA Coverage", value: 74, color: "#f59e0b" },
-      { name: "Privileged Access Reviews", value: 78, color: "#f59e0b" },
-      { name: "Critical Patch SLA", value: 69, color: "#ef4444" },
-      { name: "Third-Party Access Recertification", value: 72, color: "#f59e0b" },
-      { name: "Logging & Detection Coverage", value: 88, color: "#22c55e" }
-    ];
-
-    const identityControls = [
-      { name: "Privileged MFA Enforcement", value: 71, color: "#ef4444" },
-      { name: "Role / Access Recertification", value: 73, color: "#f59e0b" },
-      { name: "Vendor Authentication Modernization", value: 68, color: "#ef4444" },
-      { name: "Identity Monitoring Coverage", value: 84, color: "#22c55e" }
-    ];
-
-    const filterEls = {
-      dateRange: document.getElementById("dateRange"),
-      domain: document.getElementById("domainFilter"),
-      region: document.getElementById("regionFilter"),
-      severity: document.getElementById("severityFilter")
-    };
-
-    function statusClass(status) {
-      if (status === "Open") return "open";
-      if (status === "In Progress") return "progress";
-      return "closed";
-    }
-
-    function severityClass(sev) {
-      if (sev === "High") return "high";
-      if (sev === "Medium") return "med";
-      return "low";
-    }
-
-    function renderTrendChart(scopeKey) {
-      const data = monthlyData[scopeKey];
-      const labels = data.labels;
-      const riskArr = data.riskScore;
-      const criticalArr = data.criticalOpen;
-
-      const width = 760;
-      const height = 300;
-      const left = 70;
-      const right = 710;
-      const top = 40;
-      const bottom = 240;
-
-      const pointsFor = (arr) => {
-        const step = labels.length === 1 ? 0 : (right - left) / (labels.length - 1);
-        return arr.map((v, i) => {
-          const x = labels.length === 1 ? (left + right) / 2 : left + (step * i);
-          const y = bottom - ((v / 100) * (bottom - top));
-          return { x, y, value: v, label: labels[i] };
-        });
-      };
-
-      const riskPoints = pointsFor(riskArr);
-      const critPoints = pointsFor(criticalArr.map(v => v * 5)); // scale visually
-
-      const poly = pts => pts.map(p => `${p.x},${p.y}`).join(" ");
-
-      const labelX = (i) => labels.length === 1 ? (left + right) / 2 : left + (((right - left) / (labels.length - 1)) * i);
-
-      document.getElementById("trendChart").innerHTML = `
-        <svg viewBox="0 0 760 300" width="100%" height="300" aria-label="Risk trend chart">
-          <line x1="${left}" y1="${top}" x2="${left}" y2="${bottom}" stroke="#3a4b6a" stroke-width="1"/>
-          <line x1="${left}" y1="${bottom}" x2="${right}" y2="${bottom}" stroke="#3a4b6a" stroke-width="1"/>
-
-          <line x1="${left}" y1="190" x2="${right}" y2="190" stroke="#22304b" stroke-dasharray="4 4"/>
-          <line x1="${left}" y1="140" x2="${right}" y2="140" stroke="#22304b" stroke-dasharray="4 4"/>
-          <line x1="${left}" y1="90" x2="${right}" y2="90" stroke="#22304b" stroke-dasharray="4 4"/>
-
-          <text x="34" y="245" fill="#9fb0d1" font-size="12">0</text>
-          <text x="26" y="195" fill="#9fb0d1" font-size="12">25</text>
-          <text x="26" y="145" fill="#9fb0d1" font-size="12">50</text>
-          <text x="26" y="95" fill="#9fb0d1" font-size="12">75</text>
-          <text x="20" y="45" fill="#9fb0d1" font-size="12">100</text>
-
-          ${labels.map((lbl, i) => `
-            <text x="${labelX(i) - 12}" y="265" fill="#9fb0d1" font-size="12">${lbl}</text>
-          `).join("")}
-
-          <polyline fill="none" stroke="#60a5fa" stroke-width="4" points="${poly(riskPoints)}" />
-          <polyline fill="none" stroke="#ef4444" stroke-width="4" points="${poly(critPoints)}" />
-
-          ${riskPoints.map(p => `
-            <circle cx="${p.x}" cy="${p.y}" r="6" fill="#60a5fa"/>
-            <text x="${p.x - 10}" y="${p.y - 14}" fill="#dbeafe" font-size="12">${p.value}</text>
-          `).join("")}
-
-          ${critPoints.map((p, i) => `
-            <circle cx="${p.x}" cy="${p.y}" r="6" fill="#ef4444"/>
-            <text x="${p.x - 10}" y="${p.y + 18}" fill="#fecaca" font-size="12">${criticalArr[i]}</text>
-          `).join("")}
-        </svg>
-      `;
-    }
-
-    function renderDomainList(selectedDomain) {
-      const list = document.getElementById("domainList");
-      const entries = Object.entries(domainScores)
-        .filter(([name]) => selectedDomain === "all" || name === selectedDomain);
-
-      list.innerHTML = entries.map(([name, value]) => {
-        const color =
-          value >= 80 ? "#ef4444" :
-          value >= 75 ? "#f97316" :
-          value >= 68 ? "#f59e0b" :
-          value >= 60 ? "#84cc16" : "#22c55e";
-
-        return `
-          <div class="domain-item">
-            <div class="domain-top"><strong>${name}</strong><span>${value}</span></div>
-            <div class="domain-bar"><div class="domain-fill" style="width:${value}%; background:${color};"></div></div>
-          </div>
-        `;
-      }).join("");
-    }
-
-    function renderControlList(targetId, items) {
-      const el = document.getElementById(targetId);
-      el.innerHTML = items.map(c => `
-        <div class="domain-item">
-          <div class="domain-top"><strong>${c.name}</strong><span>${c.value}%</span></div>
-          <div class="domain-bar"><div class="domain-fill" style="width:${c.value}%; background:${c.color};"></div></div>
-        </div>
-      `).join("");
-    }
-
-    function getFilteredRisks() {
-      const domain = filterEls.domain.value;
-      const region = filterEls.region.value;
-      const severity = filterEls.severity.value;
-
-      return risks.filter(r => {
-        const domainOk = domain === "all" || r.domain === domain;
-        const regionOk = region === "all" || r.region === region || r.region === "Global";
-        const sevOk = severity === "all" || r.severity === severity;
-        return domainOk && regionOk && sevOk;
-      });
-    }
-
-    function renderRiskTable() {
-      const rows = getFilteredRisks();
-      const body = document.getElementById("riskTableBody");
-      body.innerHTML = rows.map(r => `
-        <tr>
-          <td>${r.id}</td>
-          <td>${r.title}</td>
-          <td>${r.owner}</td>
-          <td>${r.domain}</td>
-          <td><span class="pill ${severityClass(r.severity)}">${r.severity}</span></td>
-          <td>${r.due}</td>
-          <td><span class="status ${statusClass(r.status)}">${r.status}</span></td>
-        </tr>
-      `).join("");
-    }
-
-    function renderIdentityTable() {
-      const rows = getFilteredRisks().filter(r => r.domain === "Identity & Access");
-      const body = document.getElementById("identityTableBody");
-      body.innerHTML = rows.map(r => `
-        <tr>
-          <td>${r.id}</td>
-          <td>${r.title}</td>
-          <td>${r.owner}</td>
-          <td>${r.region}</td>
-          <td><span class="pill ${severityClass(r.severity)}">${r.severity}</span></td>
-          <td>${r.due}</td>
-          <td><span class="status ${statusClass(r.status)}">${r.status}</span></td>
-        </tr>
-      `).join("") || `
-        <tr><td colspan="7">No identity risks match the current filters.</td></tr>
-      `;
-    }
-
-    function renderNarratives(scopeKey) {
-      const domain = filterEls.domain.value;
-      const driversText =
-        domain === "Identity & Access"
-          ? "Identity remains the primary risk driver, with incomplete MFA coverage, legacy authentication on selected vendor-connected applications, and weak ownership review on shared privileged accounts."
-          : domain === "Third-Party Risk"
-          ? "Third-party risk remains elevated due to delayed recertification, inconsistent monitoring of partner-linked accounts, and incomplete validation of externally connected support access."
-          : domain === "Vulnerability Management"
-          ? "Residual risk is being driven by overdue critical vulnerabilities on externally exposed assets, where remediation pace has not fully matched exposure and exploitation pressure."
-          : "Q1 risk increased mainly from identity and third-party access exposure, combined with a rise in overdue critical vulnerability treatment items.";
-
-      const impactText =
-        "The current profile increases the likelihood of unauthorized access, delayed containment, and regulatory exposure for applications and datasets supporting sensitive operational or compliance-driven processes.";
-
-      const actions = [
-        "Prioritize identity hardening for privileged and vendor-connected applications.",
-        "Accelerate remediation of overdue critical issues linked to high-value assets.",
-        "Use ServiceNow workflow to tighten ownership, recertification, and treatment accountability."
-      ];
-
-      document.getElementById("narrativeDrivers").textContent = driversText;
-      document.getElementById("narrativeImpact").textContent = impactText;
-      document.getElementById("narrativeActions").innerHTML = actions.map(a => `<li>${a}</li>`).join("");
-
-      document.getElementById("boardExposure").textContent =
-        "Q1 ended with elevated residual risk concentrated in identity, third-party access, and selected critical remediation backlogs tracked through ServiceNow risk records.";
-
-      document.getElementById("boardConcern").textContent =
-        "The most material concern is the combination of valid-credential attack paths and external connectivity, where control gaps can translate quickly into business-impacting exposure.";
-
-      document.getElementById("boardDecision").textContent =
-        "Approve focused investment and executive sponsorship for identity modernization, critical remediation acceleration, and automated risk treatment workflow enforcement.";
-    }
-
-    function renderKPIs(scopeKey) {
-      const data = monthlyData[scopeKey];
-      const filteredRisks = getFilteredRisks();
-
-      const highCount = filteredRisks.filter(r => r.severity === "High" && r.status !== "Closed").length;
-      const closedCount = filteredRisks.filter(r => r.status === "Closed").length;
-      const assetCount = Math.max(8, filteredRisks.length * 4 + (scopeKey === "q1" ? 9 : 4));
-
-      document.getElementById("kpiRiskScore").textContent =
-        scopeKey === "q1"
-          ? Math.round(data.riskScore.reduce((a,b)=>a+b,0) / data.riskScore.length)
-          : data.riskScore[0];
-
-      document.getElementById("kpiCriticalOpen").textContent = highCount;
-      document.getElementById("kpiControl").textContent = `${data.controlEffectiveness}%`;
-      document.getElementById("kpiAssets").textContent = assetCount;
-      document.getElementById("kpiClosed").textContent = Math.max(data.remediated, closedCount);
-
-      document.getElementById("kpiRiskDelta").textContent = data.delta.risk;
-      document.getElementById("kpiCriticalDelta").textContent = data.delta.critical;
-      document.getElementById("kpiControlDelta").textContent = data.delta.control;
-      document.getElementById("kpiAssetsDelta").textContent = data.delta.assets;
-      document.getElementById("kpiClosedDelta").textContent = data.delta.closed;
-    }
-
-    function renderIdentityMini() {
-      const rows = getFilteredRisks().filter(r => r.domain === "Identity & Access");
-      document.getElementById("idMfaGap").textContent = Math.max(6, rows.length * 6);
-      document.getElementById("idVendorApps").textContent = Math.max(3, rows.length + 4);
-      document.getElementById("idControlScore").textContent = "74%";
-    }
-
-    function updateScopeText() {
-      const dateLabel = filterEls.dateRange.options[filterEls.dateRange.selectedIndex].text;
-      const domainLabel = filterEls.domain.options[filterEls.domain.selectedIndex].text;
-      const regionLabel = filterEls.region.options[filterEls.region.selectedIndex].text;
-      const severityLabel = filterEls.severity.options[filterEls.severity.selectedIndex].text;
-      document.getElementById("activeScopeText").textContent =
-        `Showing: ${dateLabel} | ${regionLabel} | ${domainLabel} | ${severityLabel}`;
-    }
-
-    function renderAll() {
-      const scopeKey = filterEls.dateRange.value;
-      renderKPIs(scopeKey);
-      renderTrendChart(scopeKey);
-      renderDomainList(filterEls.domain.value);
-      renderControlList("controlList", controls);
-      renderControlList("identityControlList", identityControls);
-      renderRiskTable();
-      renderIdentityTable();
-      renderNarratives(scopeKey);
-      renderIdentityMini();
-      updateScopeText();
-    }
-
-    document.querySelectorAll(".tab-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-        document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
-        btn.classList.add("active");
-        document.getElementById(btn.dataset.tab).classList.add("active");
-      });
-    });
-
-    Object.values(filterEls).forEach(el => el.addEventListener("change", renderAll));
-
-    renderAll();
-  </script>
 </body>
 </html>

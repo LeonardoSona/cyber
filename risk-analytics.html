@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Risk Analytics | Cyber Risk Analytics</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="top-header">
+      <div class="brand-block">
+        <h1>Cyber Risk Analytics</h1>
+        <p>Risk Analytics | Source of record: ServiceNow IRM | Reporting period: Q1 2026</p>
+      </div>
+
+      <nav class="top-nav">
+        <a href="index.html">Executive Overview</a>
+        <a href="risk-analytics.html" class="active">Risk Analytics</a>
+        <a href="exposure-monitoring.html">Exposure Monitoring</a>
+        <a href="third-party-risk.html">Third-Party Risk</a>
+        <a href="decision-support.html">Decision Support</a>
+      </nav>
+    </header>
+
+    <section class="global-filters card">
+      <div class="filter-row">
+        <div class="filter-item">
+          <label for="dateRange">Date Range</label>
+          <select id="dateRange">
+            <option selected>Q1 2026 (Jan-Mar)</option>
+            <option>January 2026</option>
+            <option>February 2026</option>
+            <option>March 2026</option>
+          </select>
+        </div>
+
+        <div class="filter-item">
+          <label for="domain">Domain</label>
+          <select id="domain">
+            <option selected>All Domains</option>
+            <option>Identity &amp; Access</option>
+            <option>Vulnerability Management</option>
+            <option>Third-Party Risk</option>
+            <option>Cloud Security</option>
+          </select>
+        </div>
+
+        <div class="filter-item">
+          <label for="region">Region</label>
+          <select id="region">
+            <option selected>Global</option>
+            <option>EMEA</option>
+            <option>Americas</option>
+            <option>APAC</option>
+          </select>
+        </div>
+
+        <div class="filter-item">
+          <label for="owner">Owner</label>
+          <select id="owner">
+            <option selected>All Owners</option>
+            <option>Identity Security</option>
+            <option>Infrastructure</option>
+            <option>Vendor Risk</option>
+            <option>Cloud Platform</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <main class="page-content">
+      <section class="page-hero">
+        <h2>Risk Analytics</h2>
+        <p>Detailed analytical view of domains, control effectiveness, heat maps, and the integrated risk register.</p>
+      </section>
+
+      <section class="kpi-grid four-up">
+        <article class="card kpi-card">
+          <span class="kpi-label">Integrated Risks</span>
+          <h3 class="kpi-value">126</h3>
+          <p class="kpi-foot">Cyber, IT, operational, third-party</p>
+        </article>
+
+        <article class="card kpi-card">
+          <span class="kpi-label">High Risks</span>
+          <h3 class="kpi-value">29</h3>
+          <p class="kpi-foot red">Above target</p>
+        </article>
+
+        <article class="card kpi-card">
+          <span class="kpi-label">Controls Linked to Risks</span>
+          <h3 class="kpi-value">214</h3>
+          <p class="kpi-foot">Mapped through ServiceNow IRM</p>
+        </article>
+
+        <article class="card kpi-card">
+          <span class="kpi-label">Remediation in Progress</span>
+          <h3 class="kpi-value">41</h3>
+          <p class="kpi-foot amber">Tracked actions</p>
+        </article>
+      </section>
+
+      <section class="content-grid two-columns">
+        <article class="card panel">
+          <div class="panel-head">
+            <h3>Risk by Domain</h3>
+            <p>Residual risk across major cyber categories.</p>
+          </div>
+          <div class="chart-placeholder" id="riskByDomainChart">
+            <p>Risk by domain chart placeholder</p>
+          </div>
+        </article>
+
+        <article class="card panel">
+          <div class="panel-head">
+            <h3>Risk Heat Map</h3>
+            <p>Likelihood × impact matrix for top risks.</p>
+          </div>
+          <div class="chart-placeholder" id="riskHeatMap">
+            <p>Heat map placeholder</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="content-grid two-columns">
+        <article class="card panel">
+          <div class="panel-head">
+            <h3>Control Effectiveness</h3>
+            <p>Performance of key controls linked to open high risks.</p>
+          </div>
+
+          <div class="bar-list">
+            <div class="bar-row">
+              <span>MFA Coverage</span>
+              <div class="bar-track"><div class="bar-fill warn" style="width:74%;"></div></div>
+              <strong>74%</strong>
+            </div>
+            <div class="bar-row">
+              <span>Privileged Access Reviews</span>
+              <div class="bar-track"><div class="bar-fill warn" style="width:78%;"></div></div>
+              <strong>78%</strong>
+            </div>
+            <div class="bar-row">
+              <span>Critical Patch SLA</span>
+              <div class="bar-track"><div class="bar-fill red" style="width:69%;"></div></div>
+              <strong>69%</strong>
+            </div>
+            <div class="bar-row">
+              <span>Third-Party Access Recertification</span>
+              <div class="bar-track"><div class="bar-fill warn" style="width:72%;"></div></div>
+              <strong>72%</strong>
+            </div>
+          </div>
+        </article>
+
+        <article class="card panel">
+          <div class="panel-head">
+            <h3>Remediation Progress</h3>
+            <p>Ownership and closure movement for open items.</p>
+          </div>
+
+          <div class="metric-stack">
+            <div class="metric-line">
+              <span>Open treatment plans</span>
+              <strong>41</strong>
+            </div>
+            <div class="metric-line">
+              <span>Past due actions</span>
+              <strong class="red-text">11</strong>
+            </div>
+            <div class="metric-line">
+              <span>Closed in Q1</span>
+              <strong class="green-text">9</strong>
+            </div>
+            <div class="metric-line">
+              <span>Average days to close</span>
+              <strong>27</strong>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="card panel">
+        <div class="panel-head">
+          <h3>Integrated Risk Register</h3>
+          <p>Illustrative ServiceNow-style risk records with ownership, severity, and treatment status.</p>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Risk ID</th>
+              <th>Risk</th>
+              <th>Domain</th>
+              <th>Owner</th>
+              <th>Impact</th>
+              <th>Likelihood</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>RISK-1042</td>
+              <td>Legacy authentication on vendor-connected application</td>
+              <td>Identity &amp; Access</td>
+              <td>Enterprise Apps</td>
+              <td>High</td>
+              <td>Medium</td>
+              <td><span class="status-pill amber">In Progress</span></td>
+            </tr>
+            <tr>
+              <td>RISK-1048</td>
+              <td>Privileged accounts without enforced MFA</td>
+              <td>Identity &amp; Access</td>
+              <td>Identity Security</td>
+              <td>High</td>
+              <td>High</td>
+              <td><span class="status-pill red">Open</span></td>
+            </tr>
+            <tr>
+              <td>RISK-1054</td>
+              <td>Critical internet-facing vulnerabilities overdue</td>
+              <td>Vulnerability Management</td>
+              <td>Infrastructure</td>
+              <td>High</td>
+              <td>High</td>
+              <td><span class="status-pill amber">In Progress</span></td>
+            </tr>
+            <tr>
+              <td>RISK-1060</td>
+              <td>Third-party access not recertified within policy window</td>
+              <td>Third-Party Risk</td>
+              <td>Vendor Risk</td>
+              <td>Medium</td>
+              <td>Medium</td>
+              <td><span class="status-pill red">Open</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

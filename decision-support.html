@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Decision Support | Cyber Risk Analytics</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="top-header">
+      <div class="brand-block">
+        <h1>Cyber Risk Analytics</h1>
+        <p>Decision Support | Source of record: ServiceNow IRM + quantified risk scenarios | Reporting period: Q1 2026</p>
+      </div>
+
+      <nav class="top-nav">
+        <a href="index.html">Executive Overview</a>
+        <a href="risk-analytics.html">Risk Analytics</a>
+        <a href="exposure-monitoring.html">Exposure Monitoring</a>
+        <a href="third-party-risk.html">Third-Party Risk</a>
+        <a href="decision-support.html" class="active">Decision Support</a>
+      </nav>
+    </header>
+
+    <section class="global-filters card">
+      <div class="filter-row">
+        <div class="filter-item">
+          <label for="dateRange">Date Range</label>
+          <select id="dateRange">
+            <option selected>Q1 2026 (Jan-Mar)</option>
+            <option>January 2026</option>
+            <option>February 2026</option>
+            <option>March 2026</option>
+          </select>
+        </div>
+
+        <div class="filter-item">
+          <label for="scenario">Scenario</label>
+          <select id="scenario">
+            <option selected>All Scenarios</option>
+            <option>Identity compromise</option>
+            <option>Ransomware</option>
+            <option>Third-party breach</option>
+            <option>Cloud misconfiguration</option>
+          </select>
+        </div>
+
+        <div class="filter-item">
+          <label for="investmentType">Investment Type</label>
+          <select id="investmentType">
+            <option selected>All Types</option>
+            <option>Identity</option>
+            <option>Infrastructure</option>
+            <option>Third-Party</option>
+            <option>Monitoring</option>
+          </select>
+        </div>
+
+        <div class="filter-item">
+          <label for="audience">Audience</label>
+          <select id="audience">
+            <option selected>Leadership</option>
+            <option>Board</option>
+            <option>Cyber Leadership</option>
+            <option>Risk Owners</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <main class="page-content">
+      <section class="page-hero">
+        <h2>Decision Support</h2>
+        <p>Connect risk movement to action, investment priorities, scenario impact, and expected reduction in loss exposure.</p>
+      </section>
+
+      <section class="kpi-grid four-up">
+        <article class="card kpi-card">
+          <span class="kpi-label">Average Annual Loss</span>
+          <h3 class="kpi-value">$8.4M</h3>
+          <p class="kpi-foot">Quantified scenario model</p>
+        </article>
+
+        <article class="card kpi-card">
+          <span class="kpi-label">Highest-Risk Scenario</span>
+          <h3 class="kpi-value">Identity</h3>
+          <p class="kpi-foot red">Valid credential pathway</p>
+        </article>
+
+        <article class="card kpi-card">
+          <span class="kpi-label">Potential Loss Reduction</span>
+          <h3 class="kpi-value">$2.1M</h3>
+          <p class="kpi-foot green">Top 3 actions combined</p>
+        </article>
+
+        <article class="card kpi-card">
+          <span class="kpi-label">Modeled RoSI</span>
+          <h3 class="kpi-value">1.7x</h3>
+          <p class="kpi-foot">Illustrative estimate</p>
+        </article>
+      </section>
+
+      <section class="content-grid two-columns">
+        <article class="card panel">
+          <div class="panel-head">
+            <h3>Scenario Comparison</h3>
+            <p>Illustrative comparison of likely loss scenarios.</p>
+          </div>
+          <div class="chart-placeholder" id="scenarioComparisonChart">
+            <p>Scenario comparison chart placeholder</p>
+          </div>
+        </article>
+
+        <article class="card panel">
+          <div class="panel-head">
+            <h3>Decision Needed</h3>
+            <p>Actions with the strongest risk-reduction leverage.</p>
+          </div>
+
+          <div class="decision-list">
+            <div class="decision-item">
+              <h4>Identity Hardening</h4>
+              <p>Enforce MFA for privileged accounts and modernize vendor-linked authentication.</p>
+              <span class="status-pill red">Priority 1</span>
+            </div>
+
+            <div class="decision-item">
+              <h4>Critical Patch Acceleration</h4>
+              <p>Reduce overdue internet-facing critical vulnerabilities through targeted remediation sprints.</p>
+              <span class="status-pill amber">Priority 2</span>
+            </div>
+
+            <div class="decision-item">
+              <h4>Third-Party Recertification Automation</h4>
+              <p>Use ServiceNow workflows to improve accountability and reduce vendor access drift.</p>
+              <span class="status-pill amber">Priority 3</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="content-grid two-columns">
+        <article class="card panel">
+          <div class="panel-head">
+            <h3>Investment Prioritization</h3>
+            <p>Expected risk reduction vs effort and cost.</p>
+          </div>
+
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Initiative</th>
+                <th>Risk Reduction</th>
+                <th>Effort</th>
+                <th>Estimated Value</th>
+                <th>Priority</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Privileged MFA + OAuth2 modernization</td>
+                <td>High</td>
+                <td>Medium</td>
+                <td>$1.1M</td>
+                <td><span class="status-pill red">P1</span></td>
+              </tr>
+              <tr>
+                <td>Critical patch remediation sprint</td>
+                <td>High</td>
+                <td>Low</td>
+                <td>$700K</td>
+                <td><span class="status-pill amber">P2</span></td>
+              </tr>
+              <tr>
+                <td>Vendor access recertification automation</td>
+                <td>Medium</td>
+                <td>Medium</td>
+                <td>$300K</td>
+                <td><span class="status-pill amber">P3</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+
+        <article class="card panel">
+          <div class="panel-head">
+            <h3>Recommendation Narrative</h3>
+            <p>Leadership-focused framing of trade-offs and value.</p>
+          </div>
+
+          <div class="narrative-card">
+            <h4>Why now</h4>
+            <p>The current profile shows a concentration of exposure in a small number of controllable areas, making targeted action more effective than broad spend.</p>
+          </div>
+
+          <div class="narrative-card">
+            <h4>Best leverage</h4>
+            <p>Identity controls and internet-facing remediation provide the largest modeled reduction in likelihood and financial loss.</p>
+          </div>
+
+          <div class="narrative-card">
+            <h4>Leadership ask</h4>
+            <p>Approve the top 3 initiatives, assign executive sponsorship, and track value realization monthly through ServiceNow-based reporting.</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="card panel">
+        <div class="panel-head">
+          <h3>Decision Log</h3>
+          <p>Illustrative section to track agreed actions and follow-through.</p>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Decision</th>
+              <th>Owner</th>
+              <th>Date</th>
+              <th>Expected Outcome</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Approve OAuth2 modernization for vendor-connected application</td>
+              <td>Enterprise Apps</td>
+              <td>05 Apr 2026</td>
+              <td>Reduce authentication-related access risk</td>
+              <td><span class="status-pill amber">Planned</span></td>
+            </tr>
+            <tr>
+              <td>Launch critical vulnerability remediation sprint</td>
+              <td>Infrastructure</td>
+              <td>09 Apr 2026</td>
+              <td>Reduce internet-facing exploitability</td>
+              <td><span class="status-pill amber">Planned</span></td>
+            </tr>
+            <tr>
+              <td>Automate third-party access reviews</td>
+              <td>Vendor Risk</td>
+              <td>15 Apr 2026</td>
+              <td>Improve ownership and recertification compliance</td>
+              <td><span class="status-pill red">Awaiting Approval</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

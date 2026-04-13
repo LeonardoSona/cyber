@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Third-Party Risk | Cyber Risk Analytics</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="top-header">
+      <div class="brand-block">
+        <h1>Cyber Risk Analytics</h1>
+        <p>Third-Party Risk | Source of record: ServiceNow IRM + vendor assessment data | Reporting period: Q1 2026</p>
+      </div>
+
+      <nav class="top-nav">
+        <a href="index.html">Executive Overview</a>
+        <a href="risk-analytics.html">Risk Analytics</a>
+        <a href="exposure-monitoring.html">Exposure Monitoring</a>
+        <a href="third-party-risk.html" class="active">Third-Party Risk</a>
+        <a href="decision-support.html">Decision Support</a>
+      </nav>
+    </header>
+
+    <section class="global-filters card">
+      <div class="filter-row">
+        <div class="filter-item">
+          <label for="dateRange">Date Range</label>
+          <select id="dateRange">
+            <option selected>Q1 2026 (Jan-Mar)</option>
+            <option>January 2026</option>
+            <option>February 2026</option>
+            <option>March 2026</option>
+          </select>
+        </div>
+
+        <div class="filter-item">
+          <label for="vendorTier">Vendor Tier</label>
+          <select id="vendorTier">
+            <option selected>All Tiers</option>
+            <option>Critical</option>
+            <option>High</option>
+            <option>Standard</option>
+          </select>
+        </div>
+
+        <div class="filter-item">
+          <label for="region">Region</label>
+          <select id="region">
+            <option selected>Global</option>
+            <option>EMEA</option>
+            <option>Americas</option>
+            <option>APAC</option>
+          </select>
+        </div>
+
+        <div class="filter-item">
+          <label for="assessmentStatus">Assessment Status</label>
+          <select id="assessmentStatus">
+            <option selected>All Statuses</option>
+            <option>Complete</option>
+            <option>In Progress</option>
+            <option>Past Due</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <main class="page-content">
+      <section class="page-hero">
+        <h2>Third-Party Risk</h2>
+        <p>Vendor risk view combining assessments, issue trends, connected application exposure, and remediation accountability.</p>
+      </section>
+
+      <section class="kpi-grid four-up">
+        <article class="card kpi-card">
+          <span class="kpi-label">Critical Vendors</span>
+          <h3 class="kpi-value">42</h3>
+          <p class="kpi-foot">In active monitoring scope</p>
+        </article>
+
+        <article class="card kpi-card">
+          <span class="kpi-label">Vendors Above Risk Threshold</span>
+          <h3 class="kpi-value">9</h3>
+          <p class="kpi-foot red">Requires treatment</p>
+        </article>
+
+        <article class="card kpi-card">
+          <span class="kpi-label">Open Third-Party Issues</span>
+          <h3 class="kpi-value">17</h3>
+          <p class="kpi-foot amber">Across risk categories</p>
+        </article>
+
+        <article class="card kpi-card">
+          <span class="kpi-label">Connected High-Risk Applications</span>
+          <h3 class="kpi-value">6</h3>
+          <p class="kpi-foot red">Linked to vendor access</p>
+        </article>
+      </section>
+
+      <section class="content-grid two-columns">
+        <article class="card panel">
+          <div class="panel-head">
+            <h3>Vendor Risk Trend</h3>
+            <p>Movement in third-party posture over Q1 2026.</p>
+          </div>
+          <div class="chart-placeholder" id="vendorTrendChart">
+            <p>Vendor trend chart placeholder</p>
+          </div>
+        </article>
+
+        <article class="card panel">
+          <div class="panel-head">
+            <h3>Third-Party KRIs</h3>
+            <p>Top indicators for partner-linked exposure.</p>
+          </div>
+
+          <div class="kri-status-list">
+            <div class="kri-row">
+              <span>Critical vendors with unresolved high issues</span>
+              <strong class="status-pill red">Red</strong>
+            </div>
+            <div class="kri-row">
+              <span>Vendor assessments past due</span>
+              <strong class="status-pill amber">Amber</strong>
+            </div>
+            <div class="kri-row">
+              <span>Third-party access recertification</span>
+              <strong class="status-pill amber">Amber</strong>
+            </div>
+            <div class="kri-row">
+              <span>Connected apps using modern auth</span>
+              <strong class="status-pill red">Red</strong>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="content-grid two-columns">
+        <article class="card panel">
+          <div class="panel-head">
+            <h3>Risk Categories by Vendor</h3>
+            <p>Comparison across common third-party cyber categories.</p>
+          </div>
+          <div class="chart-placeholder" id="vendorCategoryChart">
+            <p>Vendor comparison chart placeholder</p>
+          </div>
+        </article>
+
+        <article class="card panel">
+          <div class="panel-head">
+            <h3>Third-Party Narrative</h3>
+            <p>Where vendor exposure is translating into enterprise risk.</p>
+          </div>
+
+          <div class="narrative-card">
+            <h4>Main Driver</h4>
+            <p>Third-party exposure is concentrated in a small set of critical vendors with open high-severity findings and incomplete access recertification.</p>
+          </div>
+
+          <div class="narrative-card">
+            <h4>Business Meaning</h4>
+            <p>These risks expand the enterprise attack surface and create dependency on controls outside direct operational ownership.</p>
+          </div>
+
+          <div class="narrative-card">
+            <h4>Immediate Focus</h4>
+            <p>Prioritize high-tier vendors, close overdue assessments, and accelerate authentication modernization for vendor-linked applications.</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="card panel">
+        <div class="panel-head">
+          <h3>High-Risk Vendors</h3>
+          <p>Illustrative vendor risk table for leadership and governance review.</p>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Vendor</th>
+              <th>Tier</th>
+              <th>Primary Risk</th>
+              <th>Connected App</th>
+              <th>Risk Level</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>EHS ONE</td>
+              <td>Critical</td>
+              <td>Legacy authentication / access exposure</td>
+              <td>EHS integration gateway</td>
+              <td>High</td>
+              <td><span class="status-pill amber">Mitigation In Progress</span></td>
+            </tr>
+            <tr>
+              <td>Vendor Support Hub</td>
+              <td>Critical</td>
+              <td>Access recertification gap</td>
+              <td>Support portal</td>
+              <td>High</td>
+              <td><span class="status-pill red">Open</span></td>
+            </tr>
+            <tr>
+              <td>Cloud Data Services Ltd</td>
+              <td>High</td>
+              <td>Assessment overdue</td>
+              <td>Analytics connector</td>
+              <td>Medium</td>
+              <td><span class="status-pill amber">Assessment In Progress</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
